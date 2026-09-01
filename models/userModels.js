@@ -16,7 +16,11 @@ export async function getUserWithSettingsById(id){
 }
 
 export async function addUser(firstName, lastName, userName, password, email){
-    const result = await pool.query(`INSERT INTO USERS (first_name, last_name, user_name, password, email) VALUES ($1, $2, $3, $4, $5) RETURNING id, first_name, last_name, user_name, email`, [firstName, lastName, userName, password, email] )
+    const result = await pool.query(`INSERT INTO USERS (first_name, last_name, username, password, email) VALUES ($1, $2, $3, $4, $5) RETURNING id, first_name, last_name, username, email`, [firstName, lastName, userName, password, email] )
+
+    const newId = result.rows[0].id;
+
+    await addUserSettings(newId);
 
     return result.rows[0];
 }
@@ -25,7 +29,7 @@ export async function updateUser(id, fields){
     const allowedFields = {
         firstName: "first_name",
         lastName: "last_name",
-        userName: "user_name",
+        userName: "username",
         email: "email"
     }
 
@@ -51,7 +55,7 @@ export async function updateUser(id, fields){
     const query = `UPDATE USERS
     SET ${setClause.join(',')} 
     WHERE id = $${paramIndex} 
-    RETURNING id, first_name, last_name, user_name, email, last_updated`
+    RETURNING id, first_name, last_name, username, email, last_updated`
 
     const result = await pool.query(query, values); 
     return result.rows[0]; 
@@ -67,3 +71,7 @@ export async function softDeleteUser(id){
     return result;
 }   
 
+//Private
+async function addUserSettings(id){
+    return await pool.query(`INSERT INTO USERS_SETTINGS (user_id) VALUES ($1);`, [id])
+}

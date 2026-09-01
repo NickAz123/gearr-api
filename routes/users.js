@@ -53,6 +53,8 @@ router.put("/", async (req, res) => {
         const newUser = await uModels.addUser(firstName, lastName, userName, passwordHash ,email);
         res.status(201).json(newUser);
     } catch (err) {
+
+        console.log(err);
         
         // psql error code for unique_validation failure on unique constraints
         if (err.code === '23505') {
