@@ -1,15 +1,15 @@
-# NODE/EXPRESS DEVELOPMENT API
+# GEARR API
 
 `v1.0.0`
 
-This is a feature rich, pre-configured `Node/Express` API template that you can use to kickstart development of your own API, project or application right off the bat. It comes packaged with a containerized `Postgres` environment and database configuration. In a few steps, you can spin up a working API and database that you can customize, configure, and scale to your liking with a straightforward, maintainable structure.
+The API and backend interface for the GEARR Application. Based off of `v1.0.0` of the `node-dev-api` template.
 
 ## Features
 
-- A simple, easy to understand `Node/Express` API that spins up in seconds.
-- A pre-configrued, containerized `Postgres` database that builds, scaffolds and runs alongside the API. Easy, customizable schema. Simply scaffold and modify the _init_ file to your specification.
-- Comes packaged with pre-configured `redis` and `express-session` to handle session data and user authentication; No need to waste time on setting it up.
-- `bcrypt` enabled to handle password hashing and comparison out the box.
+- `Node/Express` API.
+- Containerized `Postgres` database.
+- `redis` and `express-session` to handle session data and user authentication.
+- `bcrypt` enabled to handle password hashing and comparison.
 - Configured to run either in _development_ mode (API code runs locally, databse runs containerized) or _production_ mode (API and database both get containerized).
 - Easy configuration script commands setup to re-scaffold your database, reset the containers, query the database and more,
 
@@ -48,14 +48,6 @@ Before anything, be sure to have `Docker` and `Node.js` installed in your enviro
 ```
 
 Pull the repository to your local machine (using any method, `git clone` recommended).
-
-Create your own empty repository in your Github, take it's url, and run a mirrored push
-
-```bash
-git push --mirror https://{your-repository}.com
-```
-
-Delete the local folder, and then re-pull from your new repository.
 
 Run the npm install using the following command...
 
