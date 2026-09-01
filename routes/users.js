@@ -16,8 +16,17 @@ router.get("/", async (req, res) => {
 
 //GET SINGLE USER
 router.get("/:id", async (req, res) => {
+    const getSettings = req.query.settings === 'true';
+    var user = null;
+
     try{
-        const user = await uModels.getUserById(req.params.id);
+        if(getSettings)
+        {
+            user = await uModels.getUserWithSettingsById(req.params.id);
+        } else {
+            user = await uModels.getUserById(req.params.id);
+        }
+
         if(!user){
             sendError(res, "USER_NOT_FOUND");
             return;

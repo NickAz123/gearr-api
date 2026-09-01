@@ -10,6 +10,11 @@ export async function getUserById(id){
     return result.rows[0];
 }
 
+export async function getUserWithSettingsById(id){
+    const result = await pool.query(`SELECT u.*, us.unit_of_measure, us.user_type_id FROM USERS u LEFT JOIN USERS_SETTINGS us ON us.user_id = u.id WHERE u.id = $1 AND u.is_deleted = FALSE LIMIT 1`,[id]);
+    return result.rows[0];
+}
+
 export async function addUser(firstName, lastName, userName, password, email){
     const result = await pool.query(`INSERT INTO USERS (first_name, last_name, user_name, password, email) VALUES ($1, $2, $3, $4, $5) RETURNING id, first_name, last_name, user_name, email`, [firstName, lastName, userName, password, email] )
 
