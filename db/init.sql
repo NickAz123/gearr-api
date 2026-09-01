@@ -1,6 +1,6 @@
 -- Type Groups (lookup table)
 CREATE TABLE type_group (
-  id SERIAL PRIMARY KEY,
+  id INTEGER PRIMARY KEY,
   name VARCHAR NOT NULL,
   code VARCHAR NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -9,7 +9,7 @@ CREATE TABLE type_group (
 
 -- Types (lookup table)
 CREATE TABLE types (
-  id SERIAL PRIMARY KEY,
+  id INTEGER PRIMARY KEY,
   type_group_id INTEGER NOT NULL,
   name VARCHAR NOT NULL,
   code VARCHAR NOT NULL,
@@ -85,6 +85,7 @@ CREATE TABLE gear_usage_log (
 CREATE TABLE part (
   id SERIAL PRIMARY KEY,
   gear_id INTEGER NOT NULL,
+  name VARCHAR NOT NULL,
   brand VARCHAR,
   notes VARCHAR,
   price DECIMAL,
@@ -165,6 +166,16 @@ INSERT INTO users (first_name, last_name, username, password, email, is_deleted)
 ('Barrys', 'Bonds', 'thebarrybb88', '', 'barrys.bonds@example.com', false),
 ('Harold', 'Foster', 'hryfoster', '', 'harold.foster@example.com', false);
 
-INSERT INTO type_group
+INSERT INTO type_group (id, name, code) VALUES 
+(200, 'Gear Status', 'GRS'),
+(300, 'Part Status', 'PTS');
 
-INSERT INTO gear (id, name, brand, model, purchase_date, usage_km, notes, status_id) VALUES (1, "Bike", "Cannondale", "Mark 2", CURRENT_TIMESTAMP, 500, "These are notes.", 201)
+INSERT INTO types (id, type_group_id, name, code) VALUES 
+(205, 200, 'Healthy', 'HTH'), 
+(305, 300, 'Healthy', 'HTH'); 
+
+INSERT INTO gear (user_id, name, brand, model, purchase_date, usage_km, notes, status_id) VALUES 
+(1, 'Bike', 'Cannondale', 'Mark 2', CURRENT_TIMESTAMP, 500, 'These are notes.', 205);
+
+INSERT INTO part (gear_id, name, brand, notes, price, usage_km, status_id) VALUES 
+(1, 'Chain', 'Chain Brand', 'notes', 150, 50, 305);
