@@ -156,9 +156,15 @@ CREATE INDEX idx_notifications_type_id ON notifications(type_id);
 CREATE INDEX idx_notifications_created_at ON notifications(created_at);
 CREATE INDEX idx_types_type_group_id ON types(type_group_id);
 
+-- INSERT STATEMENTS
+
 -- USER TABLE INSERTS
 INSERT INTO users (first_name, last_name, username, password, email, is_deleted) VALUES
 ('Jane', 'Foster', 'jdfoster', '', 'jane.foster@example.com', false),
 ('Richard', 'Miller', 'richardm19', '', 'richard.miller@example.com', true),
 ('Barrys', 'Bonds', 'thebarrybb88', '', 'barrys.bonds@example.com', false),
 ('Harold', 'Foster', 'hryfoster', '', 'harold.foster@example.com', false);
+
+INSERT INTO type_group
+
+INSERT INTO gear (id, name, brand, model, purchase_date, usage_km, notes, status_id) VALUES (1, "Bike", "Cannondale", "Mark 2", CURRENT_TIMESTAMP, 500, "These are notes.", 201)
