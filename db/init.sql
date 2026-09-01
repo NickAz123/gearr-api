@@ -159,7 +159,6 @@ CREATE INDEX idx_types_type_group_id ON types(type_group_id);
 
 -- INSERT STATEMENTS
 
--- USER TABLE INSERTS
 INSERT INTO users (first_name, last_name, username, password, email, is_deleted) VALUES
 ('Jane', 'Foster', 'jdfoster', '', 'jane.foster@example.com', false),
 ('Richard', 'Miller', 'richardm19', '', 'richard.miller@example.com', true),
