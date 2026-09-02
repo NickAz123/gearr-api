@@ -35,8 +35,8 @@ CREATE TABLE users (
 CREATE TABLE users_settings (
   id SERIAL PRIMARY KEY,
   user_id INTEGER NOT NULL UNIQUE,
-  unit_of_measure VARCHAR,
-  user_type_id INTEGER NOT NULL,
+  unit_of_measure VARCHAR DEFAULT 'MT',
+  user_type_id INTEGER NOT NULL DEFAULT 102,
   CONSTRAINT fk_users_settings_user FOREIGN KEY (user_id) REFERENCES users(id),
   CONSTRAINT fk_users_settings_type FOREIGN KEY (user_type_id) REFERENCES types(id)
 );
@@ -167,9 +167,12 @@ INSERT INTO users (first_name, last_name, username, password, email, is_deleted)
 
 INSERT INTO type_group (id, name, code) VALUES 
 (200, 'Gear Status', 'GRS'),
-(300, 'Part Status', 'PTS');
+(300, 'Part Status', 'PTS'),
+(100, 'User Types', 'UST');
 
 INSERT INTO types (id, type_group_id, name, code) VALUES 
+(101, 100, 'Admin', 'ADM'),
+(102, 100, 'Regular', 'REG'),
 (205, 200, 'Healthy', 'HTH'), 
 (305, 300, 'Healthy', 'HTH'); 
 

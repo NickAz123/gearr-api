@@ -16,8 +16,17 @@ router.get("/", async (req, res) => {
 
 //GET SINGLE USER
 router.get("/:id", async (req, res) => {
+    const getSettings = req.query.settings === 'true';
+    var user = null;
+
     try{
-        const user = await uModels.getUserById(req.params.id);
+        if(getSettings)
+        {
+            user = await uModels.getUserWithSettingsById(req.params.id);
+        } else {
+            user = await uModels.getUserById(req.params.id);
+        }
+
         if(!user){
             sendError(res, "USER_NOT_FOUND");
             return;
@@ -44,6 +53,8 @@ router.put("/", async (req, res) => {
         const newUser = await uModels.addUser(firstName, lastName, userName, passwordHash ,email);
         res.status(201).json(newUser);
     } catch (err) {
+
+        console.log(err);
         
         // psql error code for unique_validation failure on unique constraints
         if (err.code === '23505') {
