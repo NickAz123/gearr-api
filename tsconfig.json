@@ -9,9 +9,17 @@
         "esModuleInterop": true,
         "target": "ES2023",
         "sourceMap": true,
+        "rootDir": "./src",
         "outDir": "./dist",
-        "baseUrl": "./",
+        // TypeScript 6.0 no longer auto-includes every package under
+        // node_modules/@types, so the global types we rely on are listed here.
+        "types": ["node", "jest"],
         "incremental": true,
+        // Keep the typecheck cache out of the project root. The build config
+        // overrides this to write inside dist/, so `nest build`'s deleteOutDir
+        // clears the cache and the output together — otherwise a stale
+        // .tsbuildinfo makes tsc emit nothing into a freshly deleted dist/.
+        "tsBuildInfoFile": "./node_modules/.cache/tsc/typecheck.tsbuildinfo",
         "skipLibCheck": true,
         "strictNullChecks": true,
         "noImplicitAny": true,
