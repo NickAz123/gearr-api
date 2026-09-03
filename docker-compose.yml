@@ -4,14 +4,19 @@ services:
         ports:
             - "9000:9000"
         environment:
+            NODE_ENV: production
+            PORT: 9000
+            SECRET_KEY: ${SECRET_KEY:-change-me-in-production}
             DB_HOST: db
             DB_PORT: 5432
             DB_NAME: devnodedb
             DB_USER: devnodeadmin
-            DB_PASSWORD: devnodedbpassword
-            PORT: 9000
+            DB_PASSWORD: devnodepassword
+            REDIS_URL: redis://redis:6379
         depends_on:
             db:
+                condition: service_healthy
+            redis:
                 condition: service_healthy
         restart: unless-stopped
 
@@ -27,10 +32,23 @@ services:
             - pgdata:/var/lib/postgresql/data
             - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
         healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U devadmin -d devnodedb"]
+            test: ["CMD-SHELL", "pg_isready -U devnodeadmin -d devnodedb"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+    redis:
+        image: redis:7-alpine
+        ports:
+            - "6379:6379"
+        volumes:
+            - redisdata:/data
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
             interval: 5s
             timeout: 5s
             retries: 5
 
 volumes:
     pgdata:
+    redisdata:

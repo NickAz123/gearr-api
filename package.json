@@ -1,37 +1,69 @@
 {
-    "dependencies": {
-        "bcrypt": "^5.1.1",
-        "connect-redis": "^10.0.0",
-        "dotenv": "^16.4.5",
-        "express": "^4.21.0",
-        "express-session": "^1.19.0",
-        "pg": "^8.23.0",
-        "redis": "^6.2.1"
-    },
-    "name": "dev-api",
+    "name": "gearr-api",
     "version": "1.0.0",
     "description": "Faux DB/API I use for local testing applications and content",
-    "main": "app.js",
-    "type": "module",
-    "engines": {
-    "node": ">=24.19.0"
-    },
-    "scripts": {
-        "start": "node app.js",
-        "dev": "docker compose up -d db && nodemon app.js",
-        "db:up": "docker compose up -d db",
-        "db:down": "docker compose stop db",
-        "db:reset": "docker compose down -v && docker compose up -d db",
-        "psql": "docker compose exec db psql -U devnodeadmin -d devnodedb"
-    },
-    "keywords": [],
     "author": "",
     "license": "ISC",
+    "private": true,
+    "engines": {
+        "node": ">=24.19.0"
+    },
+    "scripts": {
+        "build": "nest build",
+        "format": "prettier --write \"src/**/*.ts\"",
+        "start": "nest start",
+        "start:dev": "nest start --watch",
+        "start:debug": "nest start --debug --watch",
+        "start:prod": "node dist/main.js",
+        "dev": "docker compose up -d db redis && nest start --watch",
+        "lint": "eslint src --fix",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:cov": "jest --coverage",
+        "db:up": "docker compose up -d db redis",
+        "db:down": "docker compose stop db redis",
+        "db:reset": "docker compose down -v && docker compose up -d db redis",
+        "psql": "docker compose exec db psql -U devnodeadmin -d devnodedb"
+    },
+    "dependencies": {
+        "@nestjs/common": "^11.0.0",
+        "@nestjs/config": "^4.0.0",
+        "@nestjs/core": "^11.0.0",
+        "@nestjs/platform-express": "^11.0.0",
+        "bcrypt": "^5.1.1",
+        "class-transformer": "^0.5.1",
+        "class-validator": "^0.14.1",
+        "connect-redis": "^10.0.0",
+        "express-session": "^1.19.0",
+        "joi": "^17.13.3",
+        "pg": "^8.23.0",
+        "redis": "^6.2.1",
+        "reflect-metadata": "^0.2.2",
+        "rxjs": "^7.8.1"
+    },
     "devDependencies": {
+        "@eslint/js": "^9.39.5",
+        "@nestjs/cli": "^11.0.0",
+        "@nestjs/schematics": "^11.0.0",
+        "@nestjs/testing": "^11.0.0",
+        "@types/bcrypt": "^5.0.2",
+        "@types/express": "^5.0.0",
+        "@types/express-session": "^1.18.0",
+        "@types/jest": "^29.5.14",
+        "@types/node": "^22.10.0",
+        "@types/pg": "^8.11.10",
         "eslint": "^10.8.1",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-prettier": "^5.5.6",
-        "nodemon": "^3.1.7",
-        "prettier": "^3.9.6"
+        "globals": "^15.15.0",
+        "jest": "^29.7.0",
+        "prettier": "^3.9.6",
+        "source-map-support": "^0.5.21",
+        "ts-jest": "^29.2.5",
+        "ts-loader": "^9.5.1",
+        "ts-node": "^10.9.2",
+        "tsconfig-paths": "^4.2.0",
+        "typescript": "^5.7.0",
+        "typescript-eslint": "^8.69.0"
     }
 }
