@@ -43,6 +43,15 @@ export async function addGear(userId, fields){
     RETURNING id, user_id, name, brand, model, purchase_date, usage_km, notes, last_updated`;
 
     const result = await pool.query(query, values);
+
+    const newId = result.rows[0].id;
+    await addGearHealth(newId);
+    
     return result.rows[0];
 
+}
+
+//Private
+async function addGearHealth(id){
+    return await pool.query(`INSERT INTO gear_health (gear_id) VALUES ($1)`, [id]);
 }

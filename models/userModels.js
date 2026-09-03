@@ -19,7 +19,6 @@ export async function addUser(firstName, lastName, userName, password, email){
     const result = await pool.query(`INSERT INTO USERS (first_name, last_name, username, password, email) VALUES ($1, $2, $3, $4, $5) RETURNING id, first_name, last_name, username, email`, [firstName, lastName, userName, password, email] )
 
     const newId = result.rows[0].id;
-
     await addUserSettings(newId);
 
     return result.rows[0];
