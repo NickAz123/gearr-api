@@ -179,5 +179,8 @@ INSERT INTO types (id, type_group_id, name, code) VALUES
 INSERT INTO gear (user_id, name, brand, model, purchase_date, usage_km, notes, status_id) VALUES 
 (1, 'Bike', 'Cannondale', 'Mark 2', CURRENT_TIMESTAMP, 500, 'These are notes.', 205);
 
+INSERT INTO gear (user_id, name, brand, model, purchase_date, usage_km, notes, status_id) VALUES 
+(1, 'Snowboard', 'Burton', 'Board 7', CURRENT_TIMESTAMP, 70, 'These are notes.', 205);
+
 INSERT INTO part (gear_id, name, brand, notes, price, usage_km, status_id) VALUES 
 (1, 'Chain', 'Chain Brand', 'notes', 150, 50, 305);

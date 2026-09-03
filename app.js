@@ -8,6 +8,7 @@ import { RedisStore } from "connect-redis";
 import bodyParser from "body-parser";
 
 import usersRoutes from "./routes/users.js";
+import gearRoutes from "./routes/gear.js";
 
 const PORT = process.env.PORT;
 const app = express();
@@ -39,5 +40,7 @@ app.use(
 app.use(bodyParser.json());
 
 app.use("/users", usersRoutes);
+
+app.use("/gear", gearRoutes);
 
 app.listen(PORT, () => console.log(`Server Running on Port ${PORT}`));
