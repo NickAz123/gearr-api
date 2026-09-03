@@ -57,10 +57,12 @@ router.put("/", async (req, res) => {
         // psql error code for unique_validation failure on unique constraints
         if (err.code === '23505') {
             sendError(res, "USER_ALREADY_EXISTS");
+            return;
         }
         // psql error code for not null violation
         if (err.code === '23502'){
             sendError(res, "USER_FIELD_EMPTY");
+            return;
         }
 
         sendError(res, "SYS_SERVER_ERROR");
@@ -104,6 +106,7 @@ router.patch("/:id/update-password", async (req, res) => {
             res.sendStatus(204);
         } catch (error) {
             sendError(res, "USER_UPDATE_FAIL");
+            return;
         }
     } else {
         sendError(res, "USER_PASSWORD_MISMATCH");

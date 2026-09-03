@@ -49,12 +49,13 @@ CREATE TABLE gear (
   brand VARCHAR,
   model VARCHAR,
   purchase_date TIMESTAMP,
-  usage_km DECIMAL,
+  usage_km DECIMAL DEFAULT 0,
   notes VARCHAR,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   retired_at TIMESTAMP,
+  last_updated TIMESTAMP,
   is_deleted BOOLEAN DEFAULT FALSE,
-  status_id INTEGER NOT NULL,
+  status_id INTEGER NOT NULL DEFAULT 205,
   CONSTRAINT fk_gear_user FOREIGN KEY (user_id) REFERENCES users(id),
   CONSTRAINT fk_gear_status FOREIGN KEY (status_id) REFERENCES types(id)
 );
