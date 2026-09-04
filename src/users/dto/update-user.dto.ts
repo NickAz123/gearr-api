@@ -1,6 +1,5 @@
 import {
     IsEmail,
-    IsNotEmpty,
     IsOptional,
     IsString,
     MaxLength,
@@ -12,21 +11,18 @@ import {
  * `USER_OBJECT_INVALID`, as before.
  */
 export class UpdateUserDto {
-    @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     @MaxLength(100)
     firstName?: string;
 
-    @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     @MaxLength(100)
     lastName?: string;
 
-    @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     @MaxLength(50)
     userName?: string;
 

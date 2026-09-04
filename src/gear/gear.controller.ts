@@ -6,6 +6,7 @@ import {
     HttpStatus,
     Param,
     Put,
+    Patch
 } from "@nestjs/common";
 
 import {
@@ -14,6 +15,7 @@ import {
 } from "../common/pipes/app-validation.pipe";
 import { CreateGearDto } from "./dto/create-gear.dto";
 import { CreatedGear, Gear } from "./entities/gear.entity";
+import { UpdateGearDto } from "./dto/update-gear.dto";
 import { GearService } from "./gear.service";
 
 /** Port of `routes/gear.js`. Paths, verbs and status codes are unchanged. */
@@ -44,5 +46,13 @@ export class GearController {
         @Body(appValidationPipe("GEAR_OBJECT_INVALID")) dto: CreateGearDto,
     ): Promise<CreatedGear> {
         return this.gearService.create(userId, dto);
+    }
+
+    @Patch(":id")
+    update(
+        @Param("id", parseIdPipe("GEAR_NOT_FOUND")) id: number,
+        @Body(appValidationPipe("GEAR_OBJECT_INVALID")) dto: UpdateGearDto,
+    ): Promise<UpdateGearDto>{
+        return this.gearService.update(id, dto);
     }
 }

@@ -2,9 +2,10 @@ import { Inject, Injectable } from "@nestjs/common";
 import { Pool, PoolClient } from "pg";
 
 import { PG_POOL } from "../database/database.constants";
-import { buildInsertClause, ColumnMap } from "../database/sql-builder";
+import { buildInsertClause, buildSetClause, ColumnMap } from "../database/sql-builder";
 import { CreateGearDto } from "./dto/create-gear.dto";
 import { CreatedGear, Gear } from "./entities/gear.entity";
+import { UpdateGearDto } from "./dto/update-gear.dto";
 
 /** Request keys the API permits on a create, mapped to their columns. */
 const INSERTABLE_COLUMNS: ColumnMap = {
@@ -16,10 +17,21 @@ const INSERTABLE_COLUMNS: ColumnMap = {
     notes: "notes",
 };
 
+const UPDATABLE_COLUMNS: ColumnMap = {
+    name: "name",
+    brand: "brand",
+    model: "model",
+    purchaseDate: "purchase_date",
+    usage: "usage_km",
+    notes: "notes",
+    statusId: "status_id"
+};
+
+const PUBLIC_COLUMNS = "id, name, brand, model, purchase_date, usage_km, notes, status_id";
+
 const RETURNED_COLUMNS =
     "id, user_id, name, brand, model, purchase_date, usage_km, notes, last_updated";
 
-/** Direct port of `models/gearModels.js`. All SQL for `gear` lives here. */
 @Injectable()
 export class GearRepository {
     constructor(@Inject(PG_POOL) private readonly pool: Pool) {}
@@ -40,11 +52,6 @@ export class GearRepository {
         return result.rows;
     }
 
-    /**
-     * Inserts the gear and its companion `gear_health` row. As with users, the
-     * two statements now share a transaction so a half-created record cannot be
-     * left behind.
-     */
     async create(userId: number, fields: CreateGearDto): Promise<CreatedGear> {
         const { columns, placeholders, values } = buildInsertClause(
             INSERTABLE_COLUMNS,
@@ -77,6 +84,33 @@ export class GearRepository {
 
             return created;
         });
+    }
+
+    async update(
+        id: number,
+        fields: UpdateGearDto,
+    ): Promise<UpdateGearDto | null> {
+        const { assignments, values, nextIndex } = buildSetClause(
+            UPDATABLE_COLUMNS,
+            fields,
+        );
+
+        if (assignments.length === 0){
+            return null;
+        }
+
+        assignments.push("last_updated = NOW()");
+        values.push(id);
+
+        const result = await this.pool.query<UpdateGearDto>(
+            `UPDATE gear
+            SET ${assignments.join(", ")}
+            WHERE id = $${nextIndex} AND is_deleted = FALSE
+            RETURNING ${PUBLIC_COLUMNS}`,
+            values,
+        );
+
+        return result.rows[0] ?? null;
     }
 
     private async withTransaction<T>(

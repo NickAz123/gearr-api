@@ -37,12 +37,6 @@ async function bootstrap(): Promise<void> {
         }),
     );
 
-    // Deliberately no global ValidationPipe: global pipes run *before*
-    // parameter-level ones, so a global pipe would reject invalid bodies with
-    // its own generic 400 and pre-empt the per-route `appValidationPipe(code)`
-    // that produces this API's domain error codes (USER_OBJECT_INVALID, ...).
-    // Every handler taking a body or query declares its own pipe instead.
-
     const port = config.getOrThrow<number>("PORT");
     await app.listen(port);
     logger.log(`Server running on port ${port}`);

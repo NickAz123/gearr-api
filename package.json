@@ -1,7 +1,7 @@
 {
     "name": "gearr-api",
     "version": "1.0.0",
-    "description": "Faux DB/API I use for local testing applications and content",
+    "description": "API for the GEARR Application",
     "author": "",
     "license": "ISC",
     "private": true,

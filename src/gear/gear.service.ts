@@ -7,6 +7,7 @@ import {
     pgErrorCode,
 } from "../common/errors/postgres-error-codes";
 import { CreateGearDto } from "./dto/create-gear.dto";
+import { UpdateGearDto } from "./dto/update-gear.dto";
 import { CreatedGear, Gear } from "./entities/gear.entity";
 import { GearRepository } from "./gear.repository";
 
@@ -41,5 +42,24 @@ export class GearService {
                     throw err;
             }
         }
+    }
+
+    async update(id: number, dto: UpdateGearDto): Promise<UpdateGearDto>{
+        let updated: UpdateGearDto | null;
+
+        try{
+            updated = await this.gear.update(id, dto)
+        } catch (err) {
+            if (pgErrorCode(err) === PG_UNIQUE_VIOLATION) {
+                throw new AppException("GEAR_ALREADY_EXISTS");
+            }
+            throw new AppException("GEAR_UPDATE_FAIL");
+        }
+
+        if (!updated) {
+            throw new AppException("GEAR_OBJECT_INVALID");
+        }
+
+        return updated;
     }
 }
